@@ -39,26 +39,26 @@ public class SauceDemoLogoutTest {
         usernameField.sendKeys(username);
         passwordField.sendKeys(password);
 
-        // Apăsați butonul de login
+
         loginButton.click();
 
-        // Verificați dacă sunteți redirecționat către pagina de produse
+
         String expectedProductsPageTitle = "Swag Labs";
         String actualTitle = driver.getTitle();
         Assert.assertEquals(actualTitle, expectedProductsPageTitle);
 
-        // Apăsați butonul de logout
+
         WebElement logoutButton = driver.findElement(By.id("react-burger-menu-btn"));
         logoutButton.click();
 
-        // Așteptați ca meniul să fie complet afișat
+
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
         WebElement logoutLink = wait.until(ExpectedConditions.elementToBeClickable(By.id("logout_sidebar_link")));
 
-        // Faceți clic pe butonul de logout
+
         logoutLink.click();
 
-        // Verificați dacă sunteți redirecționat către pagina de login
+
         String expectedLoginPageTitle = "Swag Labs";
         String actualLoginPageTitle = driver.getTitle();
         Assert.assertEquals(actualLoginPageTitle, expectedLoginPageTitle);

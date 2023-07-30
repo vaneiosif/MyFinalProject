@@ -25,7 +25,6 @@ public class NegativeLogIn {
         String url = "https://www.saucedemo.com/";
         driver.get(url);
 
-        // Introduceți credențialele de login
         String username = "standard_user";
         String password = "ssecret_saice";
 
@@ -36,10 +35,9 @@ public class NegativeLogIn {
         usernameField.sendKeys(username);
         passwordField.sendKeys(password);
 
-        // Apăsați butonul de login
         loginButton.click();
 
-        // Verificați dacă sunteți redirecționat către pagina de produse
+
         String expectedProductsPageTitle = "Swag Labs";
         String actualTitle = driver.getTitle();
         Assert.assertEquals(actualTitle, expectedProductsPageTitle);

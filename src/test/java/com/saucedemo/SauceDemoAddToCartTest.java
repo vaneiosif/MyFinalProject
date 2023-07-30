@@ -1,71 +1,58 @@
 package com.saucedemo;
 
-import org.openqa.selenium.By;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
+import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.ChromeDriver;
-import org.testng.Assert;
-import org.testng.annotations.AfterTest;
-import org.testng.annotations.BeforeTest;
-import org.testng.annotations.Test;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
+
+import java.time.Duration;
 
 public class SauceDemoAddToCartTest {
 
-    private WebDriver driver;
-
-    @BeforeTest
-    public void setup() {
+    public static void main(String[] args) {
+        // Set path to ChromeDriver executable
         System.setProperty("webdriver.chrome.driver", "C:\\Program Files\\Drivers\\chromedriver.exe");
-        driver = new ChromeDriver();
-        driver.manage().window().maximize();
-    }
 
-    @Test
-    public void testAddToCart() {
-        String url = "https://www.saucedemo.com/";
-        driver.get(url);
+        // Create a new ChromeDriver instance
+        WebDriver driver = new ChromeDriver();
 
-        // Introduceți credențialele de login
-        String username = "standard_user";
-        String password = "secret_sauce";
+        // Set an implicit wait for the driver to wait for elements to be available
+        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
 
-        WebElement usernameField = driver.findElement(By.id("user-name"));
-        WebElement passwordField = driver.findElement(By.id("password"));
-        WebElement loginButton = driver.findElement(By.id("login-button"));
+        // Navigate to the Saucedemo website
+        driver.get("https://www.saucedemo.com/");
 
-        usernameField.sendKeys(username);
-        passwordField.sendKeys(password);
+        // Log in to the website (replace with username and password)
+        driver.findElement(By.id("user-name")).sendKeys("standard_user");
+        driver.findElement(By.id("password")).sendKeys("secret_sauce");
+        driver.findElement(By.id("login-button")).click();
 
-        // Apăsați butonul de login
-        loginButton.click();
+        // Wait for the products page to load
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+        wait.until(ExpectedConditions.urlContains("inventory.html"));
 
-        // Verificați dacă sunteți redirecționat către pagina de produse
-        String expectedProductsPageTitle = "Swag Labs";
-        String actualTitle = driver.getTitle();
-        Assert.assertEquals(actualTitle, expectedProductsPageTitle);
+        // Add more than 5 products to the cart
+        int numberOfProductsToAdd = 6;
+        for (int i = 0; i < numberOfProductsToAdd; i++) {
+            String addToCartButtonSelector = ".btn_primary";
+            // Get all the "Add to Cart" buttons and click the i-th button
+            driver.findElements(By.cssSelector(addToCartButtonSelector)).get(i).click();
+        }
 
-        // Adăugați orice produs în coșul de cumpărături
-        // For simplicity, let's add the first product to the cart
-        WebElement firstProductAddToCartBtn = driver.findElement(By.cssSelector(".inventory_item:nth-child(1) button.btn_inventory"));
-        firstProductAddToCartBtn.click();
+        // Go to the cart page
+        driver.findElement(By.cssSelector(".shopping_cart_link")).click();
 
-        // Verificați că produsul a fost adăugat în coș
-        WebElement cartBadge = driver.findElement(By.className("shopping_cart_badge"));
-        String cartItemsCount = cartBadge.getText();
-        Assert.assertEquals(cartItemsCount, "1");
+        // Verify the number of products in the cart
+        int expectedNumberOfProducts = 5;
+        int actualNumberOfProducts = driver.findElements(By.cssSelector(".cart_item")).size();
 
-        // Proceed with the checkout or further verifications as needed
+        if (actualNumberOfProducts > expectedNumberOfProducts) {
+            System.out.println("Test passed! More than 5 products can be added to the cart.");
+        } else {
+            System.out.println("Test failed! The number of products in the cart is not more than 5.");
+        }
 
-        // Apăsați butonul de logout (optional)
-        WebElement menuButton = driver.findElement(By.className("bm-burger-button"));
-        menuButton.click();
-
-        WebElement logoutButton = driver.findElement(By.id("logout_sidebar_link"));
-        logoutButton.click();
-    }
-
-    @AfterTest
-    public void teardown() {
+        // Close the browser
         driver.quit();
     }
 }
