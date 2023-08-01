@@ -9,7 +9,7 @@ import org.testng.annotations.AfterTest;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
 
-         public class SauceDemoLoginTest {
+public class SauceDemoLoginTest {
 
     private WebDriver driver;
 
@@ -25,7 +25,6 @@ import org.testng.annotations.Test;
         String url = "https://www.saucedemo.com/";
         driver.get(url);
 
-
         String username = "standard_user";
         String password = "secret_sauce";
 
@@ -36,13 +35,13 @@ import org.testng.annotations.Test;
         usernameField.sendKeys(username);
         passwordField.sendKeys(password);
 
-
         loginButton.click();
 
+        // Verificăm dacă există un element specific care apare numai în cazul unui login reușit.
+        WebElement productsTitle = driver.findElement(By.className("title"));
+        Assert.assertTrue(productsTitle.isDisplayed(), "Login-ul a eșuat sau nu s-a ajuns pe pagina de produse.");
 
-        String expectedProductsPageTitle = "Swag Labs";
-        String actualTitle = driver.getTitle();
-        Assert.assertEquals(actualTitle, expectedProductsPageTitle);
+
     }
 
     @AfterTest
