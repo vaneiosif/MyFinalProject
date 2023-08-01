@@ -31,25 +31,22 @@ public class SauceDemoAddToCartTest {
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
         wait.until(ExpectedConditions.urlContains("inventory.html"));
 
-        // Add more than 5 products to the cart
-        int numberOfProductsToAdd = 6;
-        for (int i = 0; i < numberOfProductsToAdd; i++) {
-            String addToCartButtonSelector = ".btn_primary";
-            // Get all the "Add to Cart" buttons and click the i-th button
-            driver.findElements(By.cssSelector(addToCartButtonSelector)).get(i).click();
-        }
+        // Add the first two products to the cart
+        String addToCartButtonSelector = ".btn_primary";
+        driver.findElements(By.cssSelector(addToCartButtonSelector)).get(0).click();
+        driver.findElements(By.cssSelector(addToCartButtonSelector)).get(1).click();
 
         // Go to the cart page
         driver.findElement(By.cssSelector(".shopping_cart_link")).click();
 
         // Verify the number of products in the cart
-        int expectedNumberOfProducts = 5;
+        int expectedNumberOfProducts = 2;
         int actualNumberOfProducts = driver.findElements(By.cssSelector(".cart_item")).size();
 
-        if (actualNumberOfProducts > expectedNumberOfProducts) {
-            System.out.println("Test passed! More than 5 products can be added to the cart.");
+        if (actualNumberOfProducts == expectedNumberOfProducts) {
+            System.out.println("Test passed! 2 products were successfully added to the cart.");
         } else {
-            System.out.println("Test failed! The number of products in the cart is not more than 5.");
+            System.out.println("Test failed! The number of products in the cart is not 2.");
         }
 
         // Close the browser

@@ -20,13 +20,13 @@ public class NegativeLogIn {
         driver.manage().window().maximize();
     }
 
-    @Test
-    public void testLogin() {
+    @Test(priority = 1)
+    public void testSuccessfulLogin() {
         String url = "https://www.saucedemo.com/";
         driver.get(url);
 
         String username = "standard_user";
-        String password = "ssecret_saice";
+        String password = "secret_sauce";
 
         WebElement usernameField = driver.findElement(By.id("user-name"));
         WebElement passwordField = driver.findElement(By.id("password"));
@@ -37,10 +37,31 @@ public class NegativeLogIn {
 
         loginButton.click();
 
-
         String expectedProductsPageTitle = "Swag Labs";
         String actualTitle = driver.getTitle();
-        Assert.assertEquals(actualTitle, expectedProductsPageTitle);
+        Assert.assertEquals(actualTitle, expectedProductsPageTitle, "Login failed. Products page title not found.");
+    }
+
+    @Test(priority = 2)
+    public void testFailedLogin() {
+        String url = "https://www.saucedemo.com/";
+        driver.get(url);
+
+        String username = "locked_out_user";
+        String password = "wrong_password";
+
+        WebElement usernameField = driver.findElement(By.id("user-name"));
+        WebElement passwordField = driver.findElement(By.id("password"));
+        WebElement loginButton = driver.findElement(By.id("login-button"));
+
+        usernameField.sendKeys(username);
+        passwordField.sendKeys(password);
+
+        loginButton.click();
+
+        // Verificăm dacă mesajul de eroare este afișat
+        WebElement errorMessage = driver.findElement(By.xpath("//h3[@data-test='error']"));
+        Assert.assertTrue(errorMessage.isDisplayed(), "Expected error message is not displayed.");
     }
 
     @AfterTest

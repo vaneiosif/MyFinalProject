@@ -4,6 +4,7 @@ import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.time.Duration;
@@ -53,8 +54,9 @@ public class SauceDemoSortingAndFiltering {
         }
 
         // Filter products by keyword "Sauce Labs Backpack"
-        WebElement filterInput = driver.findElement(By.cssSelector("input[type='text']"));
-        filterInput.sendKeys("Sauce Labs Backpack");
+        WebElement filterDropdown = driver.findElement(By.cssSelector(".product_filter_container select"));
+        Select filterSelect = new Select(filterDropdown);
+        filterSelect.selectByVisibleText("Sauce Labs Backpack");
 
         try {
             // Wait for the products to be filtered
