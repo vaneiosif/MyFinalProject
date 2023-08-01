@@ -38,8 +38,8 @@ public class NegativeLogIn {
         loginButton.click();
 
         String expectedProductsPageTitle = "Swag Labs";
-        String actualTitle = driver.getTitle();
-        Assert.assertEquals(actualTitle, expectedProductsPageTitle, "Login failed. Products page title not found.");
+        WebElement productsTitle = driver.findElement(By.className("title"));
+        Assert.assertTrue(productsTitle.isDisplayed(), "Login-ul a eșuat sau nu s-a ajuns pe pagina de produse.");
     }
 
     @Test(priority = 2)
