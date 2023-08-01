@@ -45,31 +45,43 @@ public class SauceDemoSortingAndFiltering {
         WebElement sortDropdown = driver.findElement(By.cssSelector(".product_sort_container"));
         Select sortSelect = new Select(sortDropdown);
 
-        // Select "Price (low to high)" option from the dropdown using selectByValue
+        // Sort by Name (A to Z)
+        sortSelect.selectByValue("az");
+        waitForSortingChanges(3000); // Wait for 3 seconds
+
+        // Reinitialize the sort dropdown element after page reload
+        sortDropdown = driver.findElement(By.cssSelector(".product_sort_container"));
+        sortSelect = new Select(sortDropdown);
+
+        // Sort by Name (Z to A)
+        sortSelect.selectByValue("za");
+        waitForSortingChanges(3000); // Wait for 3 seconds
+
+        // Reinitialize the sort dropdown element after page reload
+        sortDropdown = driver.findElement(By.cssSelector(".product_sort_container"));
+        sortSelect = new Select(sortDropdown);
+
+        // Sort by Price (low to high)
         sortSelect.selectByValue("lohi");
+        waitForSortingChanges(3000); // Wait for 3 seconds
 
-        // Wait for the products to be sorted
-        wait.until(ExpectedConditions.attributeContains(By.cssSelector(".inventory_item:nth-child(1) .inventory_item_price"), "innerText", "$"));
+        // Reinitialize the sort dropdown element after page reload
+        sortDropdown = driver.findElement(By.cssSelector(".product_sort_container"));
+        sortSelect = new Select(sortDropdown);
 
-        // Adding a delay to ensure the page is fully loaded before attempting to find the filtered products
-        try {
-            Thread.sleep(2000); // 2 seconds delay (optional)
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-
-        // Get the names and prices of the sorted products
-        List<WebElement> productNames = driver.findElements(By.cssSelector(".inventory_item_name"));
-        List<WebElement> productPrices = driver.findElements(By.cssSelector(".inventory_item_price"));
-
-        // Print the names and prices of the sorted products
-        for (int i = 0; i < productNames.size(); i++) {
-            String name = productNames.get(i).getText();
-            String price = productPrices.get(i).getText();
-            System.out.println(name + " - " + price);
-        }
+        // Sort by Price (high to low)
+        sortSelect.selectByValue("hilo");
+        waitForSortingChanges(3000); // Wait for 3 seconds
 
         // Close the browser
         driver.quit();
+    }
+
+    private static void waitForSortingChanges(long milliseconds) {
+        try {
+            Thread.sleep(milliseconds);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 }
