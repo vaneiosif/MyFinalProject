@@ -1,6 +1,8 @@
 package com.saucedemo;
 
-import org.openqa.selenium.*;
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -39,40 +41,28 @@ public class SauceDemoSortingAndFiltering {
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
         wait.until(ExpectedConditions.urlContains("inventory.html"));
 
-        // Sort products by price (low to high)
-        WebElement sortDropdown = driver.findElement(By.cssSelector("select.product_sort_container"));
-        sortDropdown.sendKeys("lohi");
+        // Find the sort dropdown element and interact with it using Select class
+        WebElement sortDropdown = driver.findElement(By.cssSelector(".product_sort_container"));
+        Select sortSelect = new Select(sortDropdown);
+
+        // Select "Price (low to high)" option from the dropdown using selectByValue
+        sortSelect.selectByValue("lohi");
 
         // Wait for the products to be sorted
         wait.until(ExpectedConditions.attributeContains(By.cssSelector(".inventory_item:nth-child(1) .inventory_item_price"), "innerText", "$"));
 
-        // Adding a delay to ensure the page is fully loaded before attempting to find the filter element
+        // Adding a delay to ensure the page is fully loaded before attempting to find the filtered products
         try {
             Thread.sleep(2000); // 2 seconds delay (optional)
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
 
-        // Filter products by keyword "Sauce Labs Backpack"
-        WebElement filterDropdown = driver.findElement(By.cssSelector(".product_filter_container select"));
-        Select filterSelect = new Select(filterDropdown);
-        filterSelect.selectByVisibleText("Sauce Labs Backpack");
-
-        try {
-            // Wait for the products to be filtered
-            wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector(".inventory_item_name")));
-        } catch (TimeoutException e) {
-            // Handle the exception (element not found)
-            System.out.println("The filtered product list is empty or not loaded properly.");
-            driver.quit();
-            return;
-        }
-
-        // Get the names and prices of the filtered products
+        // Get the names and prices of the sorted products
         List<WebElement> productNames = driver.findElements(By.cssSelector(".inventory_item_name"));
         List<WebElement> productPrices = driver.findElements(By.cssSelector(".inventory_item_price"));
 
-        // Print the names and prices of the filtered products
+        // Print the names and prices of the sorted products
         for (int i = 0; i < productNames.size(); i++) {
             String name = productNames.get(i).getText();
             String price = productPrices.get(i).getText();
