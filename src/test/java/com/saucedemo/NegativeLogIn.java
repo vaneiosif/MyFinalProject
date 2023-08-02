@@ -59,9 +59,13 @@ public class NegativeLogIn {
 
         loginButton.click();
 
-        // Verificăm dacă mesajul de eroare este afișat
         WebElement errorMessage = driver.findElement(By.xpath("//h3[@data-test='error']"));
-        Assert.assertTrue(errorMessage.isDisplayed(), "Expected error message is not displayed.");
+
+        String expectedErrorMessage = "Epic sadface: Username and password do not match any user in this service";
+        String actualErrorMessage = errorMessage.getText();
+        Assert.assertEquals(actualErrorMessage, expectedErrorMessage, "Error message is incorrect.");
+
+
     }
 
     @AfterTest
