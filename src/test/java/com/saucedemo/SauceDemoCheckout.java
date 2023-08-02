@@ -1,5 +1,3 @@
-package com.saucedemo;
-
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -27,11 +25,11 @@ public class SauceDemoCheckout {
 
         wait.until(ExpectedConditions.visibilityOfElementLocated(By.className("shopping_cart_link")));
 
-        // Adăugare produs "Sauce Labs Backpack" în coș
+        // Add "Sauce Labs Backpack" to cart
         WebElement addToCartBackpackButton = driver.findElement(By.xpath("//div[text()='Sauce Labs Backpack']/ancestor::div[@class='inventory_item']//button"));
         addToCartBackpackButton.click();
 
-        // Adăugare produs "Sauce Labs Bike Light" în coș
+        // Add "Sauce Labs Bike Light" to cart
         WebElement addToCartBikeLightButton = driver.findElement(By.xpath("//div[text()='Sauce Labs Bike Light']/ancestor::div[@class='inventory_item']//button"));
         addToCartBikeLightButton.click();
 
@@ -60,26 +58,25 @@ public class SauceDemoCheckout {
         WebElement finishButton = driver.findElement(By.id("finish"));
         finishButton.click();
 
-
-        // Apasă butonul "Back to Home"
+        // Go back to the products page
         WebElement backToHomeButton = driver.findElement(By.id("back-to-products"));
         backToHomeButton.click();
 
-        // Deschide meniul lateral de navigare
+        // Open the side navigation menu
         WebElement menuButton = driver.findElement(By.className("bm-burger-button"));
         menuButton.click();
 
-        // Așteaptă să fie vizibil butonul de logout
+        // Wait for the logout button to be visible
         wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("logout_sidebar_link")));
 
-        // Apasă butonul "Logout"
+        // Click the logout button
         WebElement logoutButton = driver.findElement(By.id("logout_sidebar_link"));
         logoutButton.click();
 
-        // Așteaptă mesajul de confirmare "THANK YOU FOR YOUR ORDER"
+        // Wait for the "THANK YOU FOR YOUR ORDER" message to be visible
         wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//h2[text()='THANK YOU FOR YOUR ORDER']")));
 
-        // Verifică dacă mesajul de confirmare este afișat
+        // Verify if the confirmation message is displayed
         WebElement thankYouMessage = driver.findElement(By.xpath("//h2[text()='THANK YOU FOR YOUR ORDER']"));
         assert thankYouMessage.isDisplayed() : "Checkout failed! Thank you message not displayed.";
 
