@@ -7,9 +7,9 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.time.Duration;
 
-public class SauceDemoCheckout {
+public class SauceDemoCheckoutTest {
     public static void main(String[] args) throws InterruptedException {
-        System.setProperty("webdriver.chrome.driver", "src/main/resources/chromedriver.exe");
+        System.setProperty("webdriver.chrome.driver", "C:\\path\\to\\chromedriver.exe");
         WebDriver driver = new ChromeDriver();
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
 
@@ -25,11 +25,11 @@ public class SauceDemoCheckout {
 
         wait.until(ExpectedConditions.visibilityOfElementLocated(By.className("shopping_cart_link")));
 
-        // Add "Sauce Labs Backpack" to cart
+        // Adăugare produs "Sauce Labs Backpack" în coș
         WebElement addToCartBackpackButton = driver.findElement(By.xpath("//div[text()='Sauce Labs Backpack']/ancestor::div[@class='inventory_item']//button"));
         addToCartBackpackButton.click();
 
-        // Add "Sauce Labs Bike Light" to cart
+        // Adăugare produs "Sauce Labs Bike Light" în coș
         WebElement addToCartBikeLightButton = driver.findElement(By.xpath("//div[text()='Sauce Labs Bike Light']/ancestor::div[@class='inventory_item']//button"));
         addToCartBikeLightButton.click();
 
@@ -58,25 +58,10 @@ public class SauceDemoCheckout {
         WebElement finishButton = driver.findElement(By.id("finish"));
         finishButton.click();
 
-        // Go back to the products page
-        WebElement backToHomeButton = driver.findElement(By.id("back-to-products"));
-        backToHomeButton.click();
-
-        // Open the side navigation menu
-        WebElement menuButton = driver.findElement(By.className("bm-burger-button"));
-        menuButton.click();
-
-        // Wait for the logout button to be visible
-        wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("logout_sidebar_link")));
-
-        // Click the logout button
-        WebElement logoutButton = driver.findElement(By.id("logout_sidebar_link"));
-        logoutButton.click();
-
-        // Wait for the "THANK YOU FOR YOUR ORDER" message to be visible
+        // Așteaptă mesajul de confirmare "THANK YOU FOR YOUR ORDER"
         wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//h2[text()='THANK YOU FOR YOUR ORDER']")));
 
-        // Verify if the confirmation message is displayed
+        // Verifică dacă mesajul de confirmare este afișat
         WebElement thankYouMessage = driver.findElement(By.xpath("//h2[text()='THANK YOU FOR YOUR ORDER']"));
         assert thankYouMessage.isDisplayed() : "Checkout failed! Thank you message not displayed.";
 
