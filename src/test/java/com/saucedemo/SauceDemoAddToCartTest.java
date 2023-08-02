@@ -11,7 +11,7 @@ public class SauceDemoAddToCartTest {
 
     public static void main(String[] args) {
         // Set path to ChromeDriver executable
-        System.setProperty("webdriver.chrome.driver", "C:\\Program Files\\Drivers\\chromedriver.exe");
+        System.setProperty("webdriver.chrome.driver", "src/main/resources/chromedriver.exe");
 
         // Create a new ChromeDriver instance
         WebDriver driver = new ChromeDriver();
