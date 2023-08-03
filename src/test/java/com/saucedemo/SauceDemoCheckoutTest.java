@@ -106,13 +106,6 @@ public class SauceDemoCheckoutTest {
     public static void backToHomePage(WebDriver driver) {
         // Click on the website logo to go back to the home page
         driver.findElement(By.className("app_logo")).click();
-
-        // Wait for the home page to load
-        try {
-            Thread.sleep(1000); // Wait for 1 second to allow the page to load properly
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
     }
 
     public static void logout(WebDriver driver) {
@@ -122,10 +115,8 @@ public class SauceDemoCheckoutTest {
         // Click on the logout link in the menu
         driver.findElement(By.id("logout_sidebar_link")).click();
 
-        // Wait for the login page to load
+        // Wait for the login page to load after logout
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
-        wait.until(ExpectedConditions.urlContains("index.html"));
-                 driver.close();
-
+        wait.until(ExpectedConditions.urlContains("saucedemo.com"));
     }
 }
