@@ -12,7 +12,6 @@ import org.testng.annotations.Test;
 public class SauceDemoLoginTest {
 
     private WebDriver driver;
-
     @BeforeTest
     public void setup() {
         System.setProperty("webdriver.chrome.driver", "src/main/resources/chromedriver.exe");
