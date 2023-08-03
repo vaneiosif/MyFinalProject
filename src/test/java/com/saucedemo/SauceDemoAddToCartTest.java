@@ -7,18 +7,28 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.time.Duration;
 
+import org.testng.annotations.AfterTest;
+import org.testng.annotations.BeforeTest;
+import org.testng.annotations.Test;
+
 public class SauceDemoAddToCartTest {
 
-    public static void main(String[] args) {
+    private WebDriver driver;
+
+
+    @BeforeTest
+    public void setup() {
         // Set path to ChromeDriver executable
         System.setProperty("webdriver.chrome.driver", "src/main/resources/chromedriver.exe");
-
         // Create a new ChromeDriver instance
-        WebDriver driver = new ChromeDriver();
-
+        driver = new ChromeDriver();
         // Set an implicit wait for the driver to wait for elements to be available
         driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
+    }
 
+    // @Test: Metoda care reprezintă testul propriu-zis
+    @Test
+    public void testAddToCart() {
         // Navigate to the Saucedemo website
         driver.get("https://www.saucedemo.com/");
 
@@ -48,7 +58,11 @@ public class SauceDemoAddToCartTest {
         } else {
             System.out.println("Test failed! The number of products in the cart is not 2.");
         }
+    }
 
+
+    @AfterTest
+    public void teardown() {
         // Close the browser
         driver.quit();
     }

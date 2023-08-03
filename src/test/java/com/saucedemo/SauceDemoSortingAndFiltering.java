@@ -12,9 +12,17 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import java.time.Duration;
 import java.util.List;
 
+import org.testng.annotations.AfterTest;
+import org.testng.annotations.BeforeTest;
+import org.testng.annotations.Test;
+
 public class SauceDemoSortingAndFiltering {
 
-    public static void main(String[] args) {
+    private WebDriver driver;
+
+    // @BeforeTest: Metoda setup() care va fi executată înainte de test
+    @BeforeTest
+    public void setup() {
         // Set path to ChromeDriver executable
         System.setProperty("webdriver.chrome.driver", "src/main/resources/chromedriver.exe");
 
@@ -24,11 +32,15 @@ public class SauceDemoSortingAndFiltering {
         options.addArguments("--disable-notifications");
 
         // Create a new ChromeDriver instance with the given options
-        WebDriver driver = new ChromeDriver(options);
+        driver = new ChromeDriver(options);
 
         // Set an implicit wait for the driver to wait for elements to be available
         driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
+    }
 
+    // @Test: Metoda care reprezintă testul propriu-zis
+    @Test
+    public void testSortingAndFiltering() {
         // Navigate to the Saucedemo website
         driver.get("https://www.saucedemo.com/");
 
@@ -72,8 +84,12 @@ public class SauceDemoSortingAndFiltering {
         // Sort by Price (high to low)
         sortSelect.selectByValue("hilo");
         waitForSortingChanges(3000); // Wait for 3 seconds
+    }
 
-        // Close the browser
+    // @AfterTest: Metoda teardown() care va fi executată după finalizarea testului
+    @AfterTest
+    public void teardown() {
+        // Close the browser and quit WebDriver after all tests are done
         driver.quit();
     }
 
