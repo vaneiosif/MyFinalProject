@@ -10,11 +10,11 @@ import java.time.Duration;
 import org.testng.annotations.AfterTest;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
+import org.testng.Assert; // Import pentru clasa Assert
 
 public class SauceDemoAddToCartTest {
 
     private WebDriver driver;
-
 
     @BeforeTest
     public void setup() {
@@ -26,7 +26,7 @@ public class SauceDemoAddToCartTest {
         driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
     }
 
-    // @Test: Metoda care reprezintă testul propriu-zis
+
     @Test
     public void testAddToCart() {
         // Navigate to the Saucedemo website
@@ -53,13 +53,13 @@ public class SauceDemoAddToCartTest {
         int expectedNumberOfProducts = 2;
         int actualNumberOfProducts = driver.findElements(By.cssSelector(".cart_item")).size();
 
-        if (actualNumberOfProducts == expectedNumberOfProducts) {
-            System.out.println("Test passed! 2 products were successfully added to the cart.");
-        } else {
-            System.out.println("Test failed! The number of products in the cart is not 2.");
-        }
-    }
+        // Assert the result
+        Assert.assertEquals(actualNumberOfProducts, expectedNumberOfProducts,
+                "Number of products in the cart is not as expected.");
 
+        // If the assertion passes, the following message will be printed
+        System.out.println("Test passed! 2 products were successfully added to the cart.");
+    }
 
     @AfterTest
     public void teardown() {

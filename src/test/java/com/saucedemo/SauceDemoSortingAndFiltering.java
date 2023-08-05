@@ -10,8 +10,11 @@ import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.time.Duration;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
+import org.testng.Assert;
 import org.testng.annotations.AfterTest;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
@@ -20,7 +23,8 @@ public class SauceDemoSortingAndFiltering {
 
     private WebDriver driver;
 
-    // @BeforeTest: Metoda setup() care va fi executată înainte de test
+
+
     @BeforeTest
     public void setup() {
         // Set path to ChromeDriver executable
@@ -34,11 +38,14 @@ public class SauceDemoSortingAndFiltering {
         // Create a new ChromeDriver instance with the given options
         driver = new ChromeDriver(options);
 
+        // Maximize the browser window
+        driver.manage().window().maximize();
+
         // Set an implicit wait for the driver to wait for elements to be available
         driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
     }
 
-    // @Test: Metoda care reprezintă testul propriu-zis
+
     @Test
     public void testSortingAndFiltering() {
         // Navigate to the Saucedemo website
@@ -61,13 +68,17 @@ public class SauceDemoSortingAndFiltering {
         sortSelect.selectByValue("az");
         waitForSortingChanges(3000); // Wait for 3 seconds
 
-        // Reinitialize the sort dropdown element after page reload
-        sortDropdown = driver.findElement(By.cssSelector(".product_sort_container"));
-        sortSelect = new Select(sortDropdown);
+        // Get the product names after sorting
+        List<WebElement> productElements = driver.findElements(By.cssSelector(".inventory_item_name"));
+        List<String> actualProductNames = new ArrayList<>();
+        for (WebElement productElement : productElements) {
+            actualProductNames.add(productElement.getText());
+        }
 
-        // Sort by Name (Z to A)
-        sortSelect.selectByValue("za");
-        waitForSortingChanges(3000); // Wait for 3 seconds
+        // Check if products are sorted in ascending order by name
+        List<String> expectedProductNames = new ArrayList<>(actualProductNames);
+        Collections.sort(expectedProductNames);
+        Assert.assertEquals(actualProductNames, expectedProductNames, "Products are not sorted by name (A to Z).");
 
         // Reinitialize the sort dropdown element after page reload
         sortDropdown = driver.findElement(By.cssSelector(".product_sort_container"));
@@ -77,16 +88,20 @@ public class SauceDemoSortingAndFiltering {
         sortSelect.selectByValue("lohi");
         waitForSortingChanges(3000); // Wait for 3 seconds
 
-        // Reinitialize the sort dropdown element after page reload
-        sortDropdown = driver.findElement(By.cssSelector(".product_sort_container"));
-        sortSelect = new Select(sortDropdown);
+        // Get the product prices after sorting
+        List<WebElement> priceElements = driver.findElements(By.cssSelector(".inventory_item_price"));
+        List<Double> actualProductPrices = new ArrayList<>();
+        for (WebElement priceElement : priceElements) {
+            actualProductPrices.add(Double.parseDouble(priceElement.getText().substring(1)));
+        }
 
-        // Sort by Price (high to low)
-        sortSelect.selectByValue("hilo");
-        waitForSortingChanges(3000); // Wait for 3 seconds
+        // Check if products are sorted in ascending order by price
+        List<Double> expectedProductPrices = new ArrayList<>(actualProductPrices);
+        Collections.sort(expectedProductPrices);
+        Assert.assertEquals(actualProductPrices, expectedProductPrices, "Products are not sorted by price (low to high).");
     }
 
-    // @AfterTest: Metoda teardown() care va fi executată după finalizarea testului
+
     @AfterTest
     public void teardown() {
         // Close the browser and quit WebDriver after all tests are done

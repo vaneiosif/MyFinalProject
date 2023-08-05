@@ -11,6 +11,7 @@ import java.time.Duration;
 import org.testng.annotations.AfterTest;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
+import org.testng.Assert; // Import pentru clasa Assert
 
 public class SauceDemoCheckoutTest {
 
@@ -80,8 +81,9 @@ public class SauceDemoCheckoutTest {
 
     public void logout(WebDriver driver) {
         driver.findElement(By.className("bm-burger-button")).click();
-        driver.findElement(By.id("logout_sidebar_link")).click();
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+        WebElement logoutLink = wait.until(ExpectedConditions.elementToBeClickable(By.id("logout_sidebar_link")));
+        logoutLink.click();
         wait.until(ExpectedConditions.urlContains("saucedemo.com"));
     }
 }
